@@ -11,8 +11,8 @@
 	<h2 align="center">
 		<a href="create.jsp">Add New User</a> &nbsp;&nbsp;&nbsp; <a
 			href="${pageContext.request.contextPath}/user?action=list">List
-			All Users</a>
-
+			All Users</a>&nbsp;&nbsp;&nbsp; <a
+			href="${pageContext.request.contextPath}">Logout</a>
 	</h2>
 
 	<div align="center">

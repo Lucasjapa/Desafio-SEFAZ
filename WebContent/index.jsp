@@ -1,41 +1,32 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
 <html>
 <head>
-<title>User Management Application</title>
+<meta charset="ISO-8859-1">
+<title>Login - SEFAZ</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
 </head>
 <body>
 
-	<h1 align="center">User Management</h1>
-	<h2 align="center">
-		<a href="create.jsp">Add New User</a> &nbsp;&nbsp;&nbsp; <a
-			href="${pageContext.request.contextPath}/user?action=list">List All Users</a>
-
-	</h2>
-
-	<div align="center">
-		<table border="1" cellpadding="5">
-			<caption>
-				<h2>List of Users</h2>
-			</caption>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Actions</th>
-			</tr>
-			<c:forEach var="users" items="${listUser}">
-				<tr>
-					<td><c:out value="${users.id}" /></td>
-					<td><c:out value="${users.name}" /></td>
-					<td><c:out value="${users.email}" /></td>
-					<td><a href="edit?id=<c:out value='${users.id}' />">Edit</a>
-						&nbsp;&nbsp;&nbsp;&nbsp; <a
-						href="delete?id=<c:out value='${users.id}' />">Delete</a></td>
-				</tr>
-			</c:forEach>
-		</table>
+	<div class="container col-md-8 col-md-offset-3" style="overflow: auto">
+		<h1>Login - SEFAZ</h1>
+		<form action="<%=request.getContextPath()%>/login" method="post">
+			<div class="form-group">
+				<label for="uname">Email:</label> <input type="text"
+					class="form-control"  placeholder="Email"
+					name="email" required>
+			</div>
+			<div class="form-group">
+				<label for="uname">Password:</label> <input type="password"
+					class="form-control" placeholder="Password"
+					name="password" required>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 	</div>
 </body>
 </html>

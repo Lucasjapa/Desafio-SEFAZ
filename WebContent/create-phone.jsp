@@ -40,9 +40,9 @@
 				<th>DDD</th>
 				<th>Number</th>
 			</tr>
-			<td><input type="number" name="ddd" size="5"
+			<td><input type="text" name="ddd" size="5" maxlength="3"
 				value="<c:out value='${phone.ddd}' />" /></td>
-			<td><input type="text" name="number" size="30"
+			<td><input type="text" name="number" size="30" maxlength="9"
 				value="<c:out value='${phone.number}' />" /></td>
 			<tr>
 			</tr>

@@ -23,10 +23,10 @@ public class Phone {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 3)
 	private int ddd;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 9)
 	private String number;
 	
 	@Column(nullable = false)

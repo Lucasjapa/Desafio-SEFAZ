@@ -37,12 +37,12 @@
 				<input type="hidden" name="id" value="<c:out value='${user.id}' />" />
 			</c:if>
 			<tr>
-				<th>User Name:</th>
+				<th>Name:</th>
 				<td><input type="text" name="name" size="45"
 					value="<c:out value='${user.name}' />" /></td>
 			</tr>
 			<tr>
-				<th>User Email:</th>
+				<th>Email:</th>
 				<td><input type="text" name="email" size="45"
 					value="<c:out value='${user.email}' />" /></td>
 			</tr>
@@ -51,9 +51,6 @@
 				<td><input type="password" name="password" size="45"
 					value="<c:out value='${user.password}' />" /></td>
 			</tr>
-
-			
-
 
 			<tr>
 				<td colspan="2" align="center"><input type="submit"

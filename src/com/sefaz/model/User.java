@@ -1,5 +1,6 @@
 package com.sefaz.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,26 +13,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Table(name = "user")
-@AllArgsConstructor
 @Data
-public class User {
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 50)
+	@Column(nullable = false, length = 50)
 	private String name;
 	
-	@Column(length = 100)
+	@Column(nullable = false, length = 100)
 	private String email;
 
-	@Column(length = 20)
+	@Column(nullable = false, length = 20)
 	private String password;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
