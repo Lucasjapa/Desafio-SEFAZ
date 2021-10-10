@@ -8,15 +8,15 @@ import org.hibernate.Transaction;
 import com.sefaz.model.User;
 import com.sefaz.util.HibernateUtil;
 
-public class UserDao {
+import lombok.NoArgsConstructor;
 
+public class UserDao {
+	
 	// -------------SAVE USER------------------
 	public void save(User user) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			// start a transaction
 			transaction = session.beginTransaction();
-			// save
 			session.save(user);
 			transaction.commit();
 		} catch (Exception e) {
@@ -26,18 +26,14 @@ public class UserDao {
 			e.printStackTrace();
 		}
 	}
-
 	// ------------------------------------------
 
 	// -------------UPDATE USER------------------
 	public void update(User user) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			// start a transaction
 			transaction = session.beginTransaction();
-			// save the student object
 			session.update(user);
-			// commit transaction
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {
@@ -60,7 +56,7 @@ public class UserDao {
 			User user = session.get(User.class, id);
 			if (user != null) {
 				session.delete(user);
-				System.out.println("user is deleted!!!");
+				System.out.println("User is deleted!!!");
 			}
 
 			// commit transaction
@@ -115,5 +111,5 @@ public class UserDao {
         }
         return user;
     }
-
+	// ------------------------------------------
 }

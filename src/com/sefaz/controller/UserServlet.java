@@ -2,7 +2,6 @@ package com.sefaz.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,16 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sefaz.dao.UserDao;
-import com.sefaz.model.Phone;
 import com.sefaz.model.User;
+import com.sefaz.util.Constants;
 
 /**
  * Servlet implementation class UserServlet
  */
 @WebServlet("/user/*")
 public class UserServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-
 	private UserDao userDao;
 
 	public void init() {
@@ -36,23 +35,23 @@ public class UserServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action");
+		String action = request.getParameter(Constants.ACTION_KEY);
 
 		try {
 			switch (action) {
-			case "new":
+			case Constants.NEW_ACTION:
 				showNewForm(request, response);
 				break;
-			case "insert":
+			case Constants.INSERT_ACTION:
 				insertUser(request, response);
 				break;
-			case "delete":
+			case Constants.DELETE_ACTION:
 				deleteUser(request, response);
 				break;
-			case "edit":
+			case Constants.EDIT_ACTION:
 				showEditForm(request, response);
 				break;
-			case "update":
+			case Constants.UPDATE_ACTION:
 				updateUser(request, response);
 				break;
 			default:
@@ -80,7 +79,7 @@ public class UserServlet extends HttpServlet {
 
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
-		Integer id = Integer.parseInt(request.getParameter("id"));
+		Integer id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		User existingUser = userDao.getUser(id);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("create.jsp");
 		request.setAttribute("user", existingUser);
@@ -89,29 +88,29 @@ public class UserServlet extends HttpServlet {
 	}
 
 	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
+		String name = request.getParameter(Constants.NAME_COL_NAME);
+		String email = request.getParameter(Constants.EMAIL_COL_NAME);
+		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
 		User newUser = new User(0, name, email, password);
 		userDao.save(newUser);
-		response.sendRedirect("user?action=list");
+		response.sendRedirect(Constants.USER_REDIRECT_LIST);
 	}
 
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
+		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
+		String name = request.getParameter(Constants.NAME_COL_NAME);
+		String email = request.getParameter(Constants.EMAIL_COL_NAME);
+		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
 		
 		User user = new User(id, name, email, password);
 		userDao.update(user);
-		response.sendRedirect("user?action=list");
+		response.sendRedirect(Constants.USER_REDIRECT_LIST);
 	}
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
+		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		userDao.delete(id);
-		response.sendRedirect("user?action=list");
+		response.sendRedirect(Constants.USER_REDIRECT_LIST);
 	}
 
 }

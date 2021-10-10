@@ -12,34 +12,39 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name = "users")
-@RequiredArgsConstructor
+@Table(name = "user")
+@AllArgsConstructor
 @Data
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NonNull
 	private Integer id;
 	
-	@NonNull
-	@Column(nullable = false, length = 50)
+	@Column(length = 50)
 	private String name;
 	
-	@NonNull
-	@Column(nullable = false, length = 100)
+	@Column(length = 100)
 	private String email;
-	
-	@NonNull
-	@Column(nullable = false, length = 20)
+
+	@Column(length = 20)
 	private String password;
 	
-	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Phone> phones;
+
+	public User() {
+	}
+
+	public User(Integer id, String name, String email, String password) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
 	
 }

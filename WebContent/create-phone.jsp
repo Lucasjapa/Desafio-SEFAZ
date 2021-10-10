@@ -3,41 +3,52 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<title>Create User</title>
+<title>Create Phone</title>
 </head>
 <body>
 	<h1 align="center">Phone</h1>
 	<h2 align="center">
-		<a href="create.jsp">Add New Phone</a> &nbsp;&nbsp;&nbsp; <a
+		<a href="${pageContext.request.contextPath}/phone?action=new">Add New Phone</a> &nbsp;&nbsp;&nbsp; <a
 			href="${pageContext.request.contextPath}/user?action=list">List
-			All Users</a>
+			All Phones</a>
 
 	</h2>
 	<div align="center">
-		<c:if test="${user != null}">
-			<form action="${pageContext.request.contextPath}/user?action=update"
+		<c:if test="${phone != null}">
+			<form action="${pageContext.request.contextPath}/phone?action=update&user_id=<c:out value='${user.id}'/>&id=<c:out value='${phone.id}'/>"
 				method="post">
 		</c:if>
-		<c:if test="${user == null}">
-			<form action="${pageContext.request.contextPath}/user?action=insert"
+		<c:if test="${phone == null}">
+			<form action="${pageContext.request.contextPath}/phone?action=insert&user_id=<c:out value='${user.id}'/>"
 				method="post">
 		</c:if>
 		<table border="1" cellpadding="5">
 			<caption>
 				<h2>
-					<c:if test="${user != null}">
+					<c:if test="${phone != null}">
                Edit Phone
               </c:if>
-					<c:if test="${user == null}">
+					<c:if test="${phone == null}">
                Add Phone
               </c:if>
 				</h2>
 			</caption>
-			<c:if test="${user != null}">
-				<input type="hidden" name="id" value="<c:out value='${user.id}' />" />
+			<c:if test="${phone != null}">
+				<input type="hidden" name="id" value="<c:out value='${phone.id}' />" />
 			</c:if>
 			<tr>
-				<th>Phone:</th>
+				<th>DDD</th>
+				<th>Number</th>
+			</tr>
+			<td><input type="number" name="ddd" size="5"
+				value="<c:out value='${phone.ddd}' />" /></td>
+			<td><input type="text" name="number" size="30"
+				value="<c:out value='${phone.number}' />" /></td>
+			<tr>
+			</tr>
+
+			<tr>
+				<th>Type:</th>
 				<td><input type="radio" id="residencial" name="type"
 					value="Residencial"> <label for="residencial">Residencial</label><br>
 

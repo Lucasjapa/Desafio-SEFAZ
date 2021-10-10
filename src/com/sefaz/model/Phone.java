@@ -10,12 +10,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "phone")
-@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Phone {
 
@@ -35,5 +35,15 @@ public class Phone {
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name="user_id")
 	private User user;
-	
+
+	public Phone() {
+	}
+
+	public Phone(int id, int ddd, String number, String type) {
+		super();
+		this.id = id;
+		this.ddd = ddd;
+		this.number = number;
+		this.type = type;
+	}
 }

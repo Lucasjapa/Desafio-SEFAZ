@@ -52,14 +52,7 @@
 					value="<c:out value='${user.password}' />" /></td>
 			</tr>
 
-			<tr>
-				<th>Phone:</th>
-				<td><input type="radio" id="residencial" name="type"
-					value="Residencial"> <label for="residencial">Residencial</label><br>
-
-					<input type="radio" id="celular" name="type" value="celular">
-					<label for="celular">Celular</label><br>
-			</tr>
+			
 
 
 			<tr>

@@ -10,7 +10,8 @@
 	<h1 align="center">User Management</h1>
 	<h2 align="center">
 		<a href="create.jsp">Add New User</a> &nbsp;&nbsp;&nbsp; <a
-			href="${pageContext.request.contextPath}/user?action=list">List All Users</a>
+			href="${pageContext.request.contextPath}/user?action=list">List
+			All Users</a>
 
 	</h2>
 
@@ -25,14 +26,18 @@
 				<th>Email</th>
 				<th>Actions</th>
 			</tr>
-			<c:forEach var="users" items="${listUser}">
+			<c:forEach var="user" items="${listUser}">
 				<tr>
-					<td><c:out value="${users.id}" /></td>
-					<td><c:out value="${users.name}" /></td>
-					<td><c:out value="${users.email}" /></td>
-					<td><a href="${pageContext.request.contextPath}/user?action=edit&id=<c:out value='${users.id}' />">Edit</a>
+					<td><c:out value="${user.id}" /></td>
+					<td><c:out value="${user.name}" /></td>
+					<td><c:out value="${user.email}" /></td>
+					<td><a
+						href="${pageContext.request.contextPath}/user?action=edit&id=<c:out value='${user.id}' />">Edit</a>
 						&nbsp;&nbsp;&nbsp;&nbsp; <a
-						href="${pageContext.request.contextPath}/user?action=delete&id=<c:out value='${users.id}' />">Delete</a></td>
+						href="${pageContext.request.contextPath}/user?action=delete&id=<c:out value='${user.id}' />">Delete</a>
+						&nbsp;&nbsp;&nbsp;&nbsp; <a
+						href="${pageContext.request.contextPath}/phone?action=list&user_id=<c:out value='${user.id}'/>">List
+							phones</a></td>
 				</tr>
 			</c:forEach>
 		</table>
