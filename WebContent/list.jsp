@@ -1,46 +1,58 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html>
 <head>
-<title>User Management Application</title>
+<meta charset="ISO-8859-1">
+<title>List Users</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
 
-	<h1 align="center">User Management</h1>
-	<h2 align="center">
-		<a href="create.jsp">Add New User</a> &nbsp;&nbsp;&nbsp; <a
-			href="${pageContext.request.contextPath}/user?action=list">List
-			All Users</a>&nbsp;&nbsp;&nbsp; <a
-			href="${pageContext.request.contextPath}">Logout</a>
-	</h2>
+	<%@include file="includes/header.jsp"%>
 
-	<div align="center">
-		<table border="1" cellpadding="5">
-			<caption>
-				<h2>List of Users</h2>
-			</caption>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Actions</th>
-			</tr>
-			<c:forEach var="user" items="${listUser}">
-				<tr>
-					<td><c:out value="${user.id}" /></td>
-					<td><c:out value="${user.name}" /></td>
-					<td><c:out value="${user.email}" /></td>
-					<td><a
-						href="${pageContext.request.contextPath}/user?action=edit&id=<c:out value='${user.id}' />">Edit</a>
-						&nbsp;&nbsp;&nbsp;&nbsp; <a
-						href="${pageContext.request.contextPath}/user?action=delete&id=<c:out value='${user.id}' />">Delete</a>
-						&nbsp;&nbsp;&nbsp;&nbsp; <a
-						href="${pageContext.request.contextPath}/phone?action=list&user_id=<c:out value='${user.id}'/>">List
-							phones</a></td>
-				</tr>
-			</c:forEach>
-		</table>
-	</div>
+	<main style="display: flex">
+
+		<%@include file="includes/menu.jsp"%>
+
+		<div id="content">
+
+			<h1 align="center">List of Users</h1>
+			<div class="innertube" align="center">
+
+				<table class="table table-striped table-bordered"
+					style="table-layout: auto; width: auto;">
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Edit</th>
+						<th>Delete</th>
+						<th>Phones</th>
+					</tr>
+					<c:forEach var="user" items="${listUser}">
+						<tr>
+							<td><c:out value="${user.name}" /></td>
+							<td><c:out value="${user.email}" /></td>
+							<td><a
+								href="${pageContext.request.contextPath}/user?action=edit&id=<c:out value='${user.id}' />">Edit</a></td>
+							<td><a
+								href="${pageContext.request.contextPath}/user?action=delete&id=<c:out value='${user.id}' />">Delete</a></td>
+							<td><a
+								href="${pageContext.request.contextPath}/phone?action=list&user_id=<c:out value='${user.id}'/>">List
+									phones</a></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+	</main>
+
+	<%@include file="includes/footer.jsp"%>
+
 </body>
 </html>
+
+

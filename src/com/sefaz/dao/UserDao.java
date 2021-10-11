@@ -8,18 +8,24 @@ import org.hibernate.Transaction;
 import com.sefaz.model.User;
 import com.sefaz.util.HibernateUtil;
 
-import lombok.NoArgsConstructor;
-
 public class UserDao {
 
 	// -------------SAVE USER------------------
-	public void save(User user) {
+	public void save(User newUser) {
 		Transaction transaction = null;
+		User user = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			
 			transaction = session.beginTransaction();
-			session.save(user);
-			transaction.commit();
+			// check-in email exist
+			user = (User) session.createQuery("FROM User WHERE email = :email").setParameter("email", newUser.getEmail())
+	                .uniqueResult();
+			if(user == null) {
+				session.save(newUser);
+				transaction.commit();
+			}else {
+				
+			}
 			
 		} catch (Exception e) {
 			if (transaction != null) {
