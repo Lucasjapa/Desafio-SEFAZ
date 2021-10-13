@@ -87,41 +87,57 @@ public class UserServlet extends HttpServlet {
 
 	}
 
-	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+	private void insertUser(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
 		String name = request.getParameter(Constants.NAME_COL_NAME);
 		String email = request.getParameter(Constants.EMAIL_COL_NAME);
 		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
 		User newUser = new User(0, name, email, password);
+
+		int option = userDao.validateInsertUser(name, email, password);
 		
-		if (userDao.validateEmail(email)) {
+		if (option == 0) {
 			userDao.save(newUser);
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
-		}else {
+		} else if (option == 1) {
+			String message = "Invalid Data!!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher(Constants.CREATE_USER_PAGE).forward(request, response);
+			System.out.println("ERROR:Invalid Data!!!");
+		} else if (option == 2) {
 			String message = "Email exist!!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher(Constants.CREATE_USER_PAGE).forward(request, response);
 			System.out.println("ERROR:Email exist!!!");
 		}
-		
 	}
 
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+	private void updateUser(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
 		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		String name = request.getParameter(Constants.NAME_COL_NAME);
 		String email = request.getParameter(Constants.EMAIL_COL_NAME);
 		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
 
 		User user = new User(id, name, email, password);
+
+		int option = userDao.validateUpdateUser(id, name, email, password);
 		
-		if (userDao.validateEmail(email)) {
+		if (option == 0) {
 			userDao.update(user);
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
-		}else {
+		} else if (option == 1) {
+			String message = "Invalid Data!!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("user?action=edit&user_id=" + id).forward(request, response);
+			System.out.println("ERROR:Invalid Data!!!");
+		} else if (option == 2) {
 			String message = "Email exist!!!";
 			request.setAttribute("message", message);
-			request.getRequestDispatcher("user?action=edit&id=" + id).forward(request, response);
+			request.getRequestDispatcher("user?action=edit&user_id=" + id).forward(request, response);
 			System.out.println("ERROR:Email exist!!!");
 		}
+
 	}
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
