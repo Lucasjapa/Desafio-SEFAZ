@@ -89,18 +89,18 @@ public class PhoneServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("create-phone.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter(Constants.USER_ID_COL_NAME));
 		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
-		
+
 		Phone selectPhone = phoneDao.getPhone(id);
 		User selectedUser = userDao.getUser(userId);
-		
+
 		request.setAttribute("user", selectedUser);
 		request.setAttribute("phone", selectPhone);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("create-phone.jsp");
 		dispatcher.forward(request, response);
 
@@ -115,46 +115,60 @@ public class PhoneServlet extends HttpServlet {
 
 		User user = userDao.getUser(userId);
 		Phone newPhone = new Phone(0, ddd, number, type, user);
-		
-		if (phoneDao.validatePhone(ddd, number)) {
+
+		int option = phoneDao.validateInsertPhone(ddd, number, type);
+
+		if (option == 0) {
 			phoneDao.save(newPhone);
 			response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
-		}else {
+		} else if (option == 1) {
 			String message = "Invalid Data";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("phone?action=new&user_id=" + userId).forward(request, response);
 			System.out.println("ERROR:Invalid Data!!!");
+		} else if (option == 2) {
+			String message = "Phone has already been registered in the system!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("phone?action=new&user_id=" + userId).forward(request, response);
+			System.out.println("ERROR:Phone exist!!!");
 		}
 
 	}
-	private void updatePhone(HttpServletRequest request, HttpServletResponse response) 
+
+	private void updatePhone(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		int userId = Integer.parseInt(request.getParameter(Constants.USER_ID_COL_NAME));
-		
+
 		String ddd = request.getParameter(Constants.DDD_ID_COL_NAME);
 		String number = request.getParameter(Constants.NUMBER_COL_NAME);
 		String type = request.getParameter(Constants.TYPE_COL_NAME);
-		
+
 		Phone phone = phoneDao.getPhone(id);
-		
-		if (phoneDao.validatePhone(ddd, number)) {
+
+		int option = phoneDao.validateUpdatePhone(userId, ddd, number, type);
+
+		if (option == 0) {
 			phone.setDdd(ddd);
 			phone.setNumber(number);
 			phone.setType(type);
-			
+
 			phoneDao.update(phone);
 			response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
-			
-		}else {
+		} else if (option == 1) {
 			String message = "Invalid Data";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("phone?action=edit&user_id=" + userId).forward(request, response);
 			System.out.println("ERROR:Invalid Data!!!");
+		} else if (option == 2) {
+			String message = "Phone has already been registered in the system!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("phone?action=edit&user_id=" + userId).forward(request, response);
+			System.out.println("ERROR:Phone exist!!!");
 		}
 	}
-	
-	private void deletePhone(HttpServletRequest request, HttpServletResponse response) 
+
+	private void deletePhone(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		int userId = Integer.parseInt(request.getParameter(Constants.USER_ID_COL_NAME));

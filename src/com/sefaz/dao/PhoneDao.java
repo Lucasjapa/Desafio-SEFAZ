@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.sefaz.model.Phone;
+import com.sefaz.model.User;
 import com.sefaz.util.HibernateUtil;
 
 public class PhoneDao {
@@ -103,14 +104,105 @@ public class PhoneDao {
 	}
 	// ------------------------------------------
 
-	// -------------VALIDATE PHONE--------------
-	public boolean validatePhone(String ddd, String number) {
-		boolean valido = true;
-		if (!number.matches("\\d+") || !ddd.matches("\\d+")) {
-			valido = false;
-		}else if( Integer.parseInt(ddd) <= 0 || Integer.parseInt(ddd) >= 100 || ddd.length() > 3 || number.length() != 9) {
-			valido = false;
+	// -------------VALIDATE NEW PHONE--------------
+	public int validateInsertPhone(String ddd, String number, String type) {
+		int valido = 0;
+		if (validatePhoneData(ddd, number, type)) {
+			valido = 1;
+		} else if (validateNumber(ddd, number)) {
+			valido = 2;
 		}
 		return valido;
 	}
+	// ------------------------------------------
+
+	// -------------VALIDATE UPDATE PHONE--------------
+	public int validateUpdatePhone(int userId, String ddd, String number, String type) {
+		int valido = 0;
+		if (validatePhoneData(ddd, number, type)) {
+			valido = 1;
+		} else if (!validateUpdateNumber(userId, ddd, number)) {
+			if (validateNumber(ddd, number)) {
+				valido = 2;
+			}
+		}
+		return valido;
+	}
+	// ------------------------------------------
+
+	// --------------VALIDATE PHONE EXIST-------
+	public boolean validateNumber(String ddd, String number) {
+
+		Transaction transaction = null;
+		Phone phone = null;
+
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+			transaction = session.beginTransaction();
+			phone = (Phone) session.createQuery("FROM Phone WHERE number = :number").setParameter("number", number)
+					.uniqueResult();
+
+			if (phone != null && phone.getDdd().equals(ddd) && phone.getNumber().equals(number)) {
+				return true;
+			}
+
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				return false;
+			}
+			e.printStackTrace();
+		}
+		return false;
+	}
+	// ------------------------------------------
+
+	// --------------VALIDATE PHONE EXIST (UPDATE)-------
+	public boolean validateUpdateNumber(int userId, String ddd, String number) {
+
+		Transaction transaction = null;
+		Phone phone = null;
+
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+			transaction = session.beginTransaction();
+			phone = (Phone) session.createQuery("FROM Phone WHERE number = :number").setParameter("number", number)
+					.uniqueResult();
+
+			if (phone != null && phone.getDdd().equals(ddd) && phone.getNumber().equals(number)
+					&& phone.getUser().getId() == userId) {
+				return true;
+			}
+
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				return false;
+			}
+			e.printStackTrace();
+		}
+		return false;
+	}
+	// ------------------------------------------
+
+	// -------------VALIDATE PHONE DATA--------------
+	public boolean validatePhoneData(String ddd, String number, String type) {
+		boolean valido = false;
+
+		if (ddd == null || ddd.equals("")) {
+			valido = true;
+		} else if (number == null || number.equals("")) {
+			valido = true;
+		} else if (type == null || type.equals("")
+				|| (!type.equalsIgnoreCase("residential") && !type.equalsIgnoreCase("cell phone"))) {
+			valido = true;
+		} else if (!number.matches("\\d+") || !ddd.matches("\\d+")) {
+			valido = true;
+		} else if (Integer.parseInt(ddd) <= 0 || Integer.parseInt(ddd) >= 100 || ddd.length() > 3
+				|| number.length() != 9) {
+			valido = true;
+		}
+		return valido;
+	}
+	// ------------------------------------------
 }

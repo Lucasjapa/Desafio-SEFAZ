@@ -131,7 +131,6 @@ public class UserDao {
 	// ------------------------------------------
 
 	// -------------VALIDATE UPDATE USER--------------
-
 	public int validateUpdateUser(int id, String name, String email, String password) {
 		int valido = 0;
 		if (validateData(name, email, password)) {

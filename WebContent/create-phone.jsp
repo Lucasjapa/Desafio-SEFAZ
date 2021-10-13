@@ -67,11 +67,11 @@
 
 						<tr>
 							<th>Type:</th>
-							<td><input type="radio" id="residencial" name="type"
-								value="Residencial"> <label for="residencial">Residential</label><br>
+							<td><input type="radio" id="residential" name="type"
+								value="residential"> <label for="Residential">Residential</label><br>
 
-								<input type="radio" id="celular" name="type" value="celular">
-								<label for="celular">Cell Phone</label><br>
+								<input type="radio" id="cell phone" name="type" value="cell phone">
+								<label for="cell phone">Cell Phone</label><br>
 					</table>
 					<p style="color: #ff0000">* Just numbers</p>
 					<a class="btn btn-primary"
