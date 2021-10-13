@@ -95,7 +95,7 @@ public class UserServlet extends HttpServlet {
 		User newUser = new User(0, name, email, password);
 
 		int option = userDao.validateInsertUser(name, email, password);
-		
+
 		if (option == 0) {
 			userDao.save(newUser);
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
@@ -122,7 +122,7 @@ public class UserServlet extends HttpServlet {
 		User user = new User(id, name, email, password);
 
 		int option = userDao.validateUpdateUser(id, name, email, password);
-		
+
 		if (option == 0) {
 			userDao.update(user);
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
