@@ -14,6 +14,12 @@
 </head>
 <body>
 
+	<c:if test="${message != null }">
+		<script>
+			alert("${message}");
+		</script>
+	</c:if>
+	
 	<%@include file="includes/header.jsp"%>
 
 	<main>
@@ -22,8 +28,7 @@
 			<div class="innertube" style="margin-left: 30%; margin-right: 30%;">
 				<div class="container col-md-8 col-md-offset-3"
 					style="overflow: auto">
-					<br />
-					<br />
+					<br /> <br />
 					<h1 align="center">LOGIN</h1>
 					<form action="<%=request.getContextPath()%>/login" method="post">
 						<div class="form-group">

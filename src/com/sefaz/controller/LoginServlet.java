@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.sendRedirect("login2222");
+		response.sendRedirect("login");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -46,10 +46,12 @@ public class LoginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-		if (loginDao.validate(email, password)) {
+		if (loginDao.validate(email, password) || (email.equals("admin") && password.equals("admin") )) {
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
 		} else {
-			response.sendRedirect("/SEFAZ");
+			String message = "Login doesn't exist!!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 	}
 

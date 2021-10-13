@@ -144,4 +144,31 @@ public class UserDao {
         return false;
     }
 	// ------------------------------------------
+	
+	//--------------VALIDATE EMAIL-------
+	public boolean validateEmail(String email) {
+
+        Transaction transaction = null;
+        User user = null;
+        
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+    
+            transaction = session.beginTransaction();
+            user = (User) session.createQuery("FROM User WHERE email = :email").setParameter("email", email)
+                .uniqueResult();
+
+            if (user != null && user.getEmail().equals(email)) {
+                return false;
+            }
+    
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+            	return false;
+            }
+            e.printStackTrace();
+        }
+        return true;
+    }
+	// ------------------------------------------
 }

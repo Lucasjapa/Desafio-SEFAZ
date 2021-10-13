@@ -24,7 +24,7 @@ public class Phone {
 	private int id;
 	
 	@Column(nullable = false, length = 3)
-	private int ddd;
+	private String ddd;
 	
 	@Column(nullable = false, length = 9)
 	private String number;
@@ -39,7 +39,7 @@ public class Phone {
 	public Phone() {
 	}
 
-	public Phone(int id, int ddd, String number, String type) {
+	public Phone(int id, String ddd, String number, String type) {
 		super();
 		this.id = id;
 		this.ddd = ddd;

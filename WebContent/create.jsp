@@ -12,6 +12,13 @@
 </head>
 <body>
 
+	<c:if test="${message != null }">
+	<script>
+		alert("${message}");
+	</script>
+	</c:if>
+	
+
 	<%@include file="includes/header.jsp"%>
 
 	<main style="display: flex">
@@ -50,17 +57,17 @@
 						<tr>
 							<th>Name:</th>
 							<td><input type="text" name="name" size="45"
-								value="<c:out value='${user.name}' />" /></td>
+								value="<c:out value='${user.name}' />" required/></td>
 						</tr>
 						<tr>
 							<th>Email:</th>
 							<td><input type="text" name="email" size="45"
-								value="<c:out value='${user.email}' />" /></td>
+								value="<c:out value='${user.email}' />" required/></td>
 						</tr>
 						<tr>
 							<th>Password:</th>
 							<td><input type="password" name="password" size="45"
-								value="<c:out value='${user.password}' />" /></td>
+								value="<c:out value='${user.password}'/>" required/></td>
 						</tr>
 					</table>
 					<a class="btn btn-primary"
@@ -72,6 +79,8 @@
 			</div>
 		</div>
 	</main>
+
+
 
 	<%@include file="includes/footer.jsp"%>
 

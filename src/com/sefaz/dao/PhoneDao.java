@@ -27,7 +27,7 @@ public class PhoneDao {
 		}
 	}
 	// --------------------------------------------
-	
+
 	// -------------UPDATE PHONE------------------
 	public void update(Phone phone) {
 		Transaction transaction = null;
@@ -43,13 +43,13 @@ public class PhoneDao {
 		}
 	}
 	// --------------------------------------------
-	
+
 	// -------------DELETE PHONE------------------
 	public void delete(int id) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			Phone phone= session.get(Phone.class, id);
+			Phone phone = session.get(Phone.class, id);
 			if (phone != null) {
 				session.delete(phone);
 				System.out.println("Phone is deleted!!!");
@@ -63,7 +63,7 @@ public class PhoneDao {
 		}
 	}
 	// --------------------------------------------
-	
+
 	// -----------------Get a Phone----------------
 	public Phone getPhone(int id) {
 
@@ -82,7 +82,7 @@ public class PhoneDao {
 		return phone;
 	}
 	// --------------------------------------------
-	
+
 	// -------------List All Phone------------------
 	public List<Phone> getByUserId(int userId) {
 
@@ -103,4 +103,14 @@ public class PhoneDao {
 	}
 	// ------------------------------------------
 
+	// -------------VALIDATE PHONE--------------
+	public boolean validatePhone(String ddd, String number) {
+		boolean valido = true;
+		if (!number.matches("\\d+") || !ddd.matches("\\d+")) {
+			valido = false;
+		}else if( Integer.parseInt(ddd) <= 0 || Integer.parseInt(ddd) >= 100 || ddd.length() > 3 || number.length() != 9) {
+			valido = false;
+		}
+		return valido;
+	}
 }

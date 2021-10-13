@@ -20,7 +20,7 @@ import com.sefaz.util.Constants;
  */
 @WebServlet("/user/*")
 public class UserServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 	private UserDao userDao;
 
@@ -73,7 +73,7 @@ public class UserServlet extends HttpServlet {
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("create.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher(Constants.CREATE_USER_PAGE);
 		dispatcher.forward(request, response);
 	}
 
@@ -81,30 +81,47 @@ public class UserServlet extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 		Integer id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		User existingUser = userDao.getUser(id);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("create.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher(Constants.CREATE_USER_PAGE);
 		request.setAttribute("user", existingUser);
 		dispatcher.forward(request, response);
 
 	}
 
-	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+	private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
 		String name = request.getParameter(Constants.NAME_COL_NAME);
 		String email = request.getParameter(Constants.EMAIL_COL_NAME);
 		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
 		User newUser = new User(0, name, email, password);
-		userDao.save(newUser);
-		response.sendRedirect(Constants.USER_REDIRECT_LIST);
+		
+		if (userDao.validateEmail(email)) {
+			userDao.save(newUser);
+			response.sendRedirect(Constants.USER_REDIRECT_LIST);
+		}else {
+			String message = "Email exist!!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher(Constants.CREATE_USER_PAGE).forward(request, response);
+			System.out.println("ERROR:Email exist!!!");
+		}
+		
 	}
 
-	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
 		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		String name = request.getParameter(Constants.NAME_COL_NAME);
 		String email = request.getParameter(Constants.EMAIL_COL_NAME);
 		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
-		
+
 		User user = new User(id, name, email, password);
-		userDao.update(user);
-		response.sendRedirect(Constants.USER_REDIRECT_LIST);
+		
+		if (userDao.validateEmail(email)) {
+			userDao.update(user);
+			response.sendRedirect(Constants.USER_REDIRECT_LIST);
+		}else {
+			String message = "Email exist!!!";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("user?action=edit&id=" + id).forward(request, response);
+			System.out.println("ERROR:Email exist!!!");
+		}
 	}
 
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {

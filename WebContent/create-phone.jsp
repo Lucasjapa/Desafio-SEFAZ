@@ -12,15 +12,24 @@
 </head>
 <body>
 
+	<c:if test="${message != null }">
+		<script>
+			alert("${message}");
+		</script>
+	</c:if>
+
 	<%@include file="includes/header.jsp"%>
 
 	<main style="display: flex">
 
 		<%@include file="includes/menu.jsp"%>
 
+
 		<div id="content">
+
 			<div class="innertube" align="center">
 				<div align="center">
+
 					<c:if test="${phone != null}">
 						<form
 							action="${pageContext.request.contextPath}/phone?action=update&user_id=<c:out value='${user.id}'/>&id=<c:out value='${phone.id}'/>"
@@ -46,33 +55,33 @@
 								value="<c:out value='${phone.id}' />" />
 						</c:if>
 						<tr>
-							<th>DDD</th>
-							<th>Number</th>
+							<th>* DDD</th>
+							<th>* Number</th>
 						</tr>
 						<td><input type="text" name="ddd" size="5" maxlength="3"
-							value="<c:out value='${phone.ddd}' />" /></td>
+							value="<c:out value='${phone.ddd}' />" required /></td>
 						<td><input type="text" name="number" size="30" maxlength="9"
-							value="<c:out value='${phone.number}' />" /></td>
+							value="<c:out value='${phone.number}' />" required /></td>
 						<tr>
 						</tr>
 
 						<tr>
 							<th>Type:</th>
 							<td><input type="radio" id="residencial" name="type"
-								value="Residencial"> <label for="residencial">Residencial</label><br>
+								value="Residencial"> <label for="residencial">Residential</label><br>
 
 								<input type="radio" id="celular" name="type" value="celular">
-								<label for="celular">Celular</label><br>
-						</tr>
+								<label for="celular">Cell Phone</label><br>
 					</table>
+					<p style="color: #ff0000">* Just numbers</p>
 					<a class="btn btn-primary"
 						href="${pageContext.request.contextPath}/phone?action=list&user_id=<c:out value='${user.id}'/>"
 						role="button">Back</a> <input class="btn btn-success"
 						type="submit" value="Save">
 					</form>
 				</div>
-
 			</div>
+
 		</div>
 	</main>
 

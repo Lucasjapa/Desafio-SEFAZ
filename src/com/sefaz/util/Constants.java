@@ -19,6 +19,7 @@ public class Constants {
 	public static final String NUMBER_COL_NAME = "number";
 	public static final String TYPE_COL_NAME = "type";
 
+	public static final String CREATE_USER_PAGE = "create.jsp";
 	public static final String USER_REDIRECT_LIST = "user?action=list";
 	public static final String PHONE_REDIRECT_LIST = "/phone?action=list&user_id=";
 }

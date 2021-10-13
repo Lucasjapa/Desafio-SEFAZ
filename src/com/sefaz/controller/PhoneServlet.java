@@ -107,35 +107,51 @@ public class PhoneServlet extends HttpServlet {
 	}
 
 	private void insertPhone(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-		int ddd = Integer.parseInt(request.getParameter(Constants.DDD_ID_COL_NAME));
+			throws SQLException, IOException, ServletException {
+		String ddd = request.getParameter(Constants.DDD_ID_COL_NAME);
 		String number = request.getParameter(Constants.NUMBER_COL_NAME);
 		String type = request.getParameter(Constants.TYPE_COL_NAME);
 		int userId = Integer.parseInt(request.getParameter(Constants.USER_ID_COL_NAME));
 
 		User user = userDao.getUser(userId);
 		Phone newPhone = new Phone(0, ddd, number, type, user);
+		
+		if (phoneDao.validatePhone(ddd, number)) {
+			phoneDao.save(newPhone);
+			response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
+		}else {
+			String message = "Invalid Data";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("phone?action=new&user_id=" + userId).forward(request, response);
+			System.out.println("ERROR:Invalid Data!!!");
+		}
 
-		phoneDao.save(newPhone);
-		response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
 	}
-	
 	private void updatePhone(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+			throws SQLException, IOException, ServletException {
 		int id = Integer.parseInt(request.getParameter(Constants.ID_COL_NAME));
 		int userId = Integer.parseInt(request.getParameter(Constants.USER_ID_COL_NAME));
 		
-		int ddd = Integer.parseInt(request.getParameter(Constants.DDD_ID_COL_NAME));
+		String ddd = request.getParameter(Constants.DDD_ID_COL_NAME);
 		String number = request.getParameter(Constants.NUMBER_COL_NAME);
 		String type = request.getParameter(Constants.TYPE_COL_NAME);
 		
 		Phone phone = phoneDao.getPhone(id);
 		
-		phone.setDdd(ddd);
-		phone.setNumber(number);
-		phone.setType(type);
-		phoneDao.update(phone);
-		response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
+		if (phoneDao.validatePhone(ddd, number)) {
+			phone.setDdd(ddd);
+			phone.setNumber(number);
+			phone.setType(type);
+			
+			phoneDao.update(phone);
+			response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
+			
+		}else {
+			String message = "Invalid Data";
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("phone?action=edit&user_id=" + userId).forward(request, response);
+			System.out.println("ERROR:Invalid Data!!!");
+		}
 	}
 	
 	private void deletePhone(HttpServletRequest request, HttpServletResponse response) 

@@ -36,13 +36,15 @@
 						<tr>
 							<td><c:out value="${user.name}" /></td>
 							<td><c:out value="${user.email}" /></td>
-							<td><a
-								href="${pageContext.request.contextPath}/user?action=edit&id=<c:out value='${user.id}' />">Edit</a></td>
-							<td><a
-								href="${pageContext.request.contextPath}/user?action=delete&id=<c:out value='${user.id}' />">Delete</a></td>
-							<td><a
-								href="${pageContext.request.contextPath}/phone?action=list&user_id=<c:out value='${user.id}'/>">List
-									phones</a></td>
+							<td align="center"><a
+								href="${pageContext.request.contextPath}/user?action=edit&id=<c:out value='${user.id}' />"><img
+									alt="Edit" src="images/edit.png"></a></td>
+							<td align="center"><a
+								href="${pageContext.request.contextPath}/user?action=delete&id=<c:out value='${user.id}' />"><img
+									alt="Delete" src="images/delete.png"></a></td>
+							<td align="center"><a
+								href="${pageContext.request.contextPath}/phone?action=list&user_id=<c:out value='${user.id}'/>"><img
+									alt="List Phones" src="images/phone1.png"></a></td>
 						</tr>
 					</c:forEach>
 				</table>

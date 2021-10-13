@@ -40,12 +40,12 @@
 								<td><c:out value="${phone.ddd}" /></td>
 								<td><c:out value="${phone.number}" /></td>
 								<td><c:out value="${phone.type}" /></td>
-								<td><a
-									href="${pageContext.request.contextPath}/phone?action=edit&user_id=<c:out value='${user.id}'/>&id=<c:out value='${phone.id}'/>">Edit</a>
-								</td>
-								<td><a
-									href="${pageContext.request.contextPath}/phone?action=delete&user_id=<c:out value='${user.id}'/>&id=<c:out value='${phone.id}'/>">Delete</a>
-								</td>
+								<td align="center"><a
+									href="${pageContext.request.contextPath}/phone?action=edit&user_id=<c:out value='${user.id}'/>&id=<c:out value='${phone.id}'/>"><img
+										alt="Edit" src="images/edit.png"></a></td>
+								<td align="center"><a
+									href="${pageContext.request.contextPath}/phone?action=delete&user_id=<c:out value='${user.id}'/>&id=<c:out value='${phone.id}'/>"><img
+										alt="Delete" src="images/delete.png"></a></td>
 							</tr>
 						</c:forEach>
 					</table>
