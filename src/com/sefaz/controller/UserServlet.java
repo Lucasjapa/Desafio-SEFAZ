@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sefaz.dao.UserDao;
 import com.sefaz.model.User;
 import com.sefaz.util.Constants;
+import com.sefaz.util.UserEnum;
 
 /**
  * Servlet implementation class UserServlet
@@ -94,17 +95,17 @@ public class UserServlet extends HttpServlet {
 		String password = request.getParameter(Constants.PASSWORD_COL_NAME);
 		User newUser = new User(0, name, email, password);
 
-		int option = userDao.validateInsertUser(name, email, password);
+		UserEnum option = userDao.validateInsertUser(name, email, password);
 
-		if (option == 0) {
+		if (option == UserEnum.SAVE) {
 			userDao.save(newUser);
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
-		} else if (option == 1) {
+		} else if (option == UserEnum.INVALID_DATA) {
 			String message = "Invalid Data!!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher(Constants.CREATE_USER_PAGE).forward(request, response);
 			System.out.println("ERROR:Invalid Data!!!");
-		} else if (option == 2) {
+		} else if (option == UserEnum.EMAIL_EXIST) {
 			String message = "Email exist!!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher(Constants.CREATE_USER_PAGE).forward(request, response);
@@ -121,17 +122,17 @@ public class UserServlet extends HttpServlet {
 
 		User user = new User(id, name, email, password);
 
-		int option = userDao.validateUpdateUser(id, name, email, password);
+		UserEnum option = userDao.validateUpdateUser(id, name, email, password);
 
-		if (option == 0) {
+		if (option == UserEnum.UPDATE) {
 			userDao.update(user);
 			response.sendRedirect(Constants.USER_REDIRECT_LIST);
-		} else if (option == 1) {
+		} else if (option == UserEnum.INVALID_DATA) {
 			String message = "Invalid Data!!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("user?action=edit&user_id=" + id).forward(request, response);
 			System.out.println("ERROR:Invalid Data!!!");
-		} else if (option == 2) {
+		} else if (option == UserEnum.EMAIL_EXIST) {
 			String message = "Email exist!!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("user?action=edit&user_id=" + id).forward(request, response);

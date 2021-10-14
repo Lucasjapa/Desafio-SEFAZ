@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import com.sefaz.model.Phone;
 import com.sefaz.model.User;
 import com.sefaz.util.HibernateUtil;
+import com.sefaz.util.PhoneEnum;
 
 public class PhoneDao {
 
@@ -15,9 +16,8 @@ public class PhoneDao {
 	public void save(Phone phone) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			// start a transaction
+
 			transaction = session.beginTransaction();
-			// save
 			session.save(phone);
 			transaction.commit();
 		} catch (Exception e) {
@@ -105,25 +105,25 @@ public class PhoneDao {
 	// ------------------------------------------
 
 	// -------------VALIDATE NEW PHONE--------------
-	public int validateInsertPhone(String ddd, String number, String type) {
-		int valido = 0;
+	public PhoneEnum validateInsertPhone(String ddd, String number, String type) {
+		PhoneEnum valido = PhoneEnum.SAVE;
 		if (validatePhoneData(ddd, number, type)) {
-			valido = 1;
+			valido = PhoneEnum.INVALID_DATA;
 		} else if (validateNumber(ddd, number)) {
-			valido = 2;
+			valido = PhoneEnum.NUMBER_EXIST;
 		}
 		return valido;
 	}
 	// ------------------------------------------
 
 	// -------------VALIDATE UPDATE PHONE--------------
-	public int validateUpdatePhone(int userId, String ddd, String number, String type) {
-		int valido = 0;
+	public PhoneEnum validateUpdatePhone(int userId, String ddd, String number, String type) {
+		PhoneEnum valido = PhoneEnum.UPDATE;
 		if (validatePhoneData(ddd, number, type)) {
-			valido = 1;
+			valido = PhoneEnum.INVALID_DATA;
 		} else if (!validateUpdateNumber(userId, ddd, number)) {
 			if (validateNumber(ddd, number)) {
-				valido = 2;
+				valido = PhoneEnum.NUMBER_EXIST;
 			}
 		}
 		return valido;

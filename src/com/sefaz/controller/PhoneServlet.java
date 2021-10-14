@@ -16,6 +16,7 @@ import com.sefaz.dao.UserDao;
 import com.sefaz.model.Phone;
 import com.sefaz.model.User;
 import com.sefaz.util.Constants;
+import com.sefaz.util.PhoneEnum;
 
 /**
  * Servlet implementation class PhoneServlet
@@ -116,17 +117,17 @@ public class PhoneServlet extends HttpServlet {
 		User user = userDao.getUser(userId);
 		Phone newPhone = new Phone(0, ddd, number, type, user);
 
-		int option = phoneDao.validateInsertPhone(ddd, number, type);
+		PhoneEnum option = phoneDao.validateInsertPhone(ddd, number, type);
 
-		if (option == 0) {
+		if (option == PhoneEnum.SAVE) {
 			phoneDao.save(newPhone);
 			response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
-		} else if (option == 1) {
+		} else if (option == PhoneEnum.INVALID_DATA) {
 			String message = "Invalid Data";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("phone?action=new&user_id=" + userId).forward(request, response);
 			System.out.println("ERROR:Invalid Data!!!");
-		} else if (option == 2) {
+		} else if (option == PhoneEnum.NUMBER_EXIST) {
 			String message = "Phone has already been registered in the system!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("phone?action=new&user_id=" + userId).forward(request, response);
@@ -146,21 +147,21 @@ public class PhoneServlet extends HttpServlet {
 
 		Phone phone = phoneDao.getPhone(id);
 
-		int option = phoneDao.validateUpdatePhone(userId, ddd, number, type);
+		PhoneEnum option = phoneDao.validateUpdatePhone(userId, ddd, number, type);
 
-		if (option == 0) {
+		if (option == PhoneEnum.UPDATE) {
 			phone.setDdd(ddd);
 			phone.setNumber(number);
 			phone.setType(type);
 
 			phoneDao.update(phone);
 			response.sendRedirect(request.getContextPath() + Constants.PHONE_REDIRECT_LIST + userId);
-		} else if (option == 1) {
+		} else if (option == PhoneEnum.INVALID_DATA) {
 			String message = "Invalid Data";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("phone?action=edit&user_id=" + userId).forward(request, response);
 			System.out.println("ERROR:Invalid Data!!!");
-		} else if (option == 2) {
+		} else if (option == PhoneEnum.NUMBER_EXIST) {
 			String message = "Phone has already been registered in the system!!";
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("phone?action=edit&user_id=" + userId).forward(request, response);

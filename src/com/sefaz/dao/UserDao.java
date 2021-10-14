@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 
 import com.sefaz.model.User;
 import com.sefaz.util.HibernateUtil;
+import com.sefaz.util.UserEnum;
 
 public class UserDao {
 
@@ -14,18 +15,12 @@ public class UserDao {
 	public void save(User newUser) {
 		Transaction transaction = null;
 		User user = null;
+
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
 			transaction = session.beginTransaction();
-			// check-in email exist
-			user = (User) session.createQuery("FROM User WHERE email = :email")
-					.setParameter("email", newUser.getEmail()).uniqueResult();
-			if (user == null) {
-				session.save(newUser);
-				transaction.commit();
-			} else {
-
-			}
+			session.save(newUser);
+			transaction.commit();
 
 		} catch (Exception e) {
 			if (transaction != null) {
@@ -119,28 +114,26 @@ public class UserDao {
 	// ------------------------------------------
 
 	// -------------VALIDATE NEW USER--------------
-	public int validateInsertUser(String name, String email, String password) {
-		int valido = 0;
+	public UserEnum validateInsertUser(String name, String email, String password) {
+		UserEnum valido = UserEnum.SAVE;
 		if (validateData(name, email, password)) {
-			valido = 1;
+			valido = UserEnum.INVALID_DATA;
 		} else if (validateEmail(email)) {
-			valido = 2;
+			valido = UserEnum.EMAIL_EXIST;
 		}
 		return valido;
 	}
 	// ------------------------------------------
 
 	// -------------VALIDATE UPDATE USER--------------
-	public int validateUpdateUser(int id, String name, String email, String password) {
-		int valido = 0;
+	public UserEnum validateUpdateUser(int id, String name, String email, String password) {
+		UserEnum valido = UserEnum.UPDATE;
 		if (validateData(name, email, password)) {
-			valido = 1;
+			valido = UserEnum.INVALID_DATA;
 		} else if (!validateUpdateEmail(id, email)) {
 			if (validateEmail(email)) {
-				valido = 2;
+				valido = UserEnum.EMAIL_EXIST;
 			}
-		} else {
-			valido = 0;
 		}
 		return valido;
 	}
